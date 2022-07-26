@@ -18,7 +18,7 @@
     "minecraft-protocol": "1.35.1",
     "nuxt": "2.15.8",
     "nuxt-buefy": "0.4.23",
-    "vue": "2.7.8",
+    "vue": "3.2.37",
     "vue-server-renderer": "2.7.8",
     "vue-template-compiler": "2.7.8",
     "webpack": "5.74.0"
