@@ -5897,20 +5897,20 @@ min-indent@^1.0.0:
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==
 
-minecraft-data@^3.0.0:
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.9.1.tgz#f49da3f60501b7d60526f8e22c682535cf146c59"
-  integrity sha512-Wbgq2cRaebaq3zExTuV3Knyjtnm1tIKvJxyu6cVmwbQpbX0z2qgh9fTr3ZJXF8lRP1PwHCCHr1zaU8PikmIO5g==
+minecraft-data@^3.8.0:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.10.1.tgz#62b5c251e63fe089d5f531f458d7b6abc7ea885f"
+  integrity sha512-Fr/tjL3i1yqyrfAfbQ60RbmXmOS8cqomBsNtwgTos9rIdH7tHJ5syayKXk/KV8M0i+mwvXf5O3/CoJkxq7mf0Q==
 
 minecraft-folder-path@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minecraft-folder-path/-/minecraft-folder-path-1.2.0.tgz#08ea450bfb20dbb02cf6e1470864e2f0d652e477"
   integrity sha512-qaUSbKWoOsH9brn0JQuBhxNAzTDMwrOXorwuRxdJKKKDYvZhtml+6GVCUrY5HRiEsieBEjCUnhVpDuQiKsiFaw==
 
-minecraft-protocol@1.35.1:
-  version "1.35.1"
-  resolved "https://registry.yarnpkg.com/minecraft-protocol/-/minecraft-protocol-1.35.1.tgz#5783bd2156f14128d1ed8d0c756b3306622e1575"
-  integrity sha512-f39oYBKV3jnThWhLoThzBNd4imG332KmnvK/uzfUvr5lt6HFmYgznzzaDl2q9fRyNj5pMS73f5n/B1XUICK8gQ==
+minecraft-protocol@1.36.0:
+  version "1.36.0"
+  resolved "https://registry.yarnpkg.com/minecraft-protocol/-/minecraft-protocol-1.36.0.tgz#89a3600d4c0491ebe884588fab139f00eaf990c4"
+  integrity sha512-xS4htpwog3g6Sl9vRuJXt214lKorAXh8+WQUP1z9hEI9bFzARWYKsrk/N1IKs/6IUv1tLz1twFghb8vbnZS0yg==
   dependencies:
     "@types/readable-stream" "^2.3.13"
     aes-js "^3.1.2"
@@ -5919,11 +5919,11 @@ minecraft-protocol@1.35.1:
     endian-toggle "^0.0.0"
     lodash.get "^4.1.2"
     lodash.merge "^4.3.0"
-    minecraft-data "^3.0.0"
+    minecraft-data "^3.8.0"
     minecraft-folder-path "^1.2.0"
     node-fetch "^2.6.1"
     node-rsa "^0.4.2"
-    prismarine-auth "^1.1.0"
+    prismarine-auth "^1.7.0"
     prismarine-nbt "^2.0.0"
     protodef "^1.8.0"
     readable-stream "^4.1.0"
@@ -7409,10 +7409,10 @@ pretty-time@^1.1.0:
   resolved "https://registry.yarnpkg.com/pretty-time/-/pretty-time-1.1.0.tgz#ffb7429afabb8535c346a34e41873adf3d74dd0e"
   integrity sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==
 
-prismarine-auth@^1.1.0:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/prismarine-auth/-/prismarine-auth-1.5.4.tgz#a8b2202e4f64c3e54e31ad9bf64d20e6214b831b"
-  integrity sha512-52QwdECN2E+d94wPDkZYHBHo7Zmbsnh1vZjqwXOEqf3UJe09N0kpLp8w8/4GQdp5o5Nxhl/Ljm8qA0Vbs1mPfg==
+prismarine-auth@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/prismarine-auth/-/prismarine-auth-1.7.0.tgz#7eaa474ad10b94c9787836a5e0f2cf2d90024294"
+  integrity sha512-Feorw3LkKGDxafolD0f7KcuucOad8NceXEoIwYScxhOdld61CpKVh8aprA3IWnmd0Vj/KO+qK8VGpFSvdaaZzA==
   dependencies:
     "@azure/msal-node" "^1.1.0"
     "@xboxreplay/xboxlive-auth" "^3.3.3"
