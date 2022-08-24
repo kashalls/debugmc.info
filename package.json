@@ -14,7 +14,7 @@
   "dependencies": {
     "@nuxtjs/axios": "5.13.6",
     "@nuxtjs/pwa": "3.3.5",
-    "core-js": "3.24.0",
+    "core-js": "3.25.0",
     "minecraft-protocol": "1.36.0",
     "nuxt": "2.15.8",
     "nuxt-buefy": "0.4.23",
