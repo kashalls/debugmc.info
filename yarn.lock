@@ -5945,10 +5945,10 @@ minecraft-folder-path@^1.2.0:
   resolved "https://registry.yarnpkg.com/minecraft-folder-path/-/minecraft-folder-path-1.2.0.tgz#08ea450bfb20dbb02cf6e1470864e2f0d652e477"
   integrity sha512-qaUSbKWoOsH9brn0JQuBhxNAzTDMwrOXorwuRxdJKKKDYvZhtml+6GVCUrY5HRiEsieBEjCUnhVpDuQiKsiFaw==
 
-minecraft-protocol@1.36.0:
-  version "1.36.0"
-  resolved "https://registry.yarnpkg.com/minecraft-protocol/-/minecraft-protocol-1.36.0.tgz#89a3600d4c0491ebe884588fab139f00eaf990c4"
-  integrity sha512-xS4htpwog3g6Sl9vRuJXt214lKorAXh8+WQUP1z9hEI9bFzARWYKsrk/N1IKs/6IUv1tLz1twFghb8vbnZS0yg==
+minecraft-protocol@1.36.1:
+  version "1.36.1"
+  resolved "https://registry.yarnpkg.com/minecraft-protocol/-/minecraft-protocol-1.36.1.tgz#9d54ce39a1b6209ea1604c0fcc650f0e292d7a59"
+  integrity sha512-ITJiWD8qdC+HtqBFw/OuTef53tQQIh3u9lcTjc9aC20ci14Y1mtrAd+PmaVF2k5RknHlPmlY40qiNualhzN54g==
   dependencies:
     "@types/readable-stream" "^2.3.13"
     aes-js "^3.1.2"
