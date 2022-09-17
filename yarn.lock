@@ -1514,6 +1514,11 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
+"@sfirew/mc-motd-parser@^1.0.9-10":
+  version "1.0.9-10"
+  resolved "https://registry.yarnpkg.com/@sfirew/mc-motd-parser/-/mc-motd-parser-1.0.9-10.tgz#a39fa79f5ea55cc10637e223aef54e005f79a0f3"
+  integrity sha512-DTF5t4hroapCjOMAd9gIabU3OjFNJrbMsuzxLa3cW+/br7bvQbZwBDAVTsV/Gn2J42dVEVCT6mv5Jlm9QRUHMg==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.4.tgz#37fc1223f0786c39627068a12e94d6e6fc61de16"

@@ -7,120 +7,101 @@
     <h2 class="subtitle has-text-centered">
       <i>Quickly debug your minecraft server!</i>
     </h2>
-    <b-field grouped>
-      <b-input v-model="host" placeholder="debugmc.info" type="search" expanded />
-      <p class="control">
-        <b-button class="button is-primary" @click="preformPing">
-          Query
-        </b-button>
-      </p>
-    </b-field>
+    <div class="box">
+      <b-field grouped>
+        <b-input v-model="host" placeholder="debugmc.info" type="search" expanded />
+        <p class="control">
+          <b-button class="button is-primary" @click="preformPing">
+            Query
+          </b-button>
+        </p>
+        <b-checkbox v-model="advanced">
+          Advanced
+        </b-checkbox>
+      </b-field>
+      <b-field v-if="advanced" grouped>
+        <b-field label="Platform Override">
+          <b-select v-model="platform" icon="minecraft">
+            <option value="java">
+              Java
+            </option>
+            <option value="bedrock">
+              Bedrock
+            </option>
+          </b-select>
+        </b-field>
+        <b-field label="Protocol Version">
+          <b-numberinput v-model="version" :controls="false" step="1" exponential />
+          <template #label>
+            Protocol Version
+          </template>
+        </b-field>
+        <b-field>
+          <b-numberinput v-model="port" :controls="false" step="1" exponential />
+          <template #label>
+            Port Override
+          </template>
+        </b-field>
+      </b-field>
+    </div>
     <div class="columns">
       <div class="column">
-        <form class="box">
-          <div class="control">
-            <h1 class="title is-size-5">
-              Recent History
-            </h1>
-            <b-field v-if="history.length" grouped group-multiline>
-              <b-taglist>
-                <ServerTag
-                  v-for="historyServer in history"
-                  :key="historyServer"
-                  :content="historyServer"
-                  isCloseable="true"
-                  aria-close-label="Remove Server"
-                  @click.native="host = historyServer"
-                  @close.native="removeServer(historyServer)"
-                />
-              </b-taglist>
-            </b-field>
-            <p v-else>
-              Nothing seems to be here... Why not check out the tested servers below?
-            </p>
-          </div>
-        </form>
-        <div class="box">
-          <h1 class="title is-size-5">
-            Suggested Servers
-          </h1>
-          <b-taglist>
-            <ServerTag
-              v-for="suggested in suggestions"
-              :key="suggested"
-              :content="suggested"
-              :suggested="true"
-              @click.native="host = suggested"
-            />
-          </b-taglist>
-        </div>
+        <ServerBox title="Recent History" :history="history" @select="host = $event" @remove="removeServer($event)" />
+        <ServerBox title="Suggested Servers" :history="suggestions" :suggested="true" @select="host = $event" />
       </div>
 
       <div class="column">
-        <div class="columns is-multiline">
-          <div class="column">
-            <div class="card">
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-48x48">
-                      <template v-if="loading">
-                        <b-skeleton width="48px" height="48px" />
-                      </template>
-                    </figure>
-                  </div>
-                  <div class="media-content">
-                    <b-skeleton v-if="loading" />
-                    <p v-else class="title is-size-4">
-                      {{ server.name }}
-                    </p>
-                    <b-skeleton v-if="loading" />
-                    <p v-else class="subtitle is-size-6">
-                      {{ host }}
-                    </p>
-                  </div>
-                </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <b-skeleton v-if="loading || !server.favicon" width="48px" height="48px" />
+                  <b-image v-else :src="server.favicon" />
+                </figure>
+              </div>
+              <div class="media-content">
+                <b-skeleton v-if="loading" />
+                <p v-else class="title is-size-4">
+                  {{ host }}
+                </p>
+                <b-skeleton v-if="loading" />
+                <p v-else class="subtitle is-size-6">
+                  <b-tag icon="content-copy" size="is-small" class="is-clickable is-unselectable" @click="copyToClipboard(dns.a[0].data)">
+                    {{ dns.a[0].data }}
+                  </b-tag>
+                </p>
+              </div>
+            </div>
 
-                <div class="content">
-                  <b-taglist>
-                    <b-tag :type="loading ? '' : pingColor(server.ping)" icon="wifi-star" size="is-small">
-                      <template v-if="loading">
-                        <b-skeleton width="36px" />
-                      </template>
-                      <template v-else>
-                        {{ server.ping }}ms
-                      </template>
-                    </b-tag>
-                    <b-tag icon="information-variant" size="is-small">
-                      <template v-if="loading">
-                        <b-skeleton width="86px" />
-                      </template>
-                      <template v-else>
-                        {{ server.version }}
-                      </template>
-                    </b-tag>
-                    <b-tag type="is-info is-light" icon="account-multiple" size="is-small">
-                      <template v-if="loading">
-                        <b-skeleton width="64px" />
-                      </template>
-                      <template v-else>
-                        {{ server.playercount }}
-                      </template>
-                    </b-tag>
-                    <b-tag icon="dns" size="is-small" class="is-clickable is-unselectable" @click.native="doDNSLook">
-                      DNS
-                    </b-tag>
-                  </b-taglist>
+            <div class="content">
+              <b-taglist>
+                <b-tag :type="loading ? '' : pingColor(server.ping)" icon="wifi-star" size="is-small">
+                  <b-skeleton v-if="loading" width="36px" />
+                  <template v-else>
+                    {{ server.ping }}ms
+                  </template>
+                </b-tag>
+                <b-tag icon="information-variant" size="is-small">
+                  <b-skeleton v-if="loading" width="86px" />
+                  <template v-else>
+                    {{ server.version.name }}
+                  </template>
+                </b-tag>
+                <b-tag type="is-info is-light" icon="account-multiple" size="is-small">
+                  <b-skeleton v-if="loading" width="64px" />
+                  <template v-else>
+                    {{ server.players.online }} / {{ server.players.max }}
+                  </template>
+                </b-tag>
+                <b-tag icon="dns" size="is-small" class="is-clickable is-unselectable" @click.native="doDNSLook">
+                  DNS
+                </b-tag>
+              </b-taglist>
 
-                  <div class="block">
-                    <template v-if="loading">
-                      <b-skeleton size="is-large" :count="2" />
-                    </template>
-                    <template v-else>
-                      {{ server.motd }}
-                    </template>
-                  </div>
-                </div>
+              <div class="block">
+                <b-skeleton v-if="loading" size="is-large" :count="2" />
+                <div v-else v-html="server.motd" />
               </div>
             </div>
           </div>
@@ -131,16 +112,20 @@
 </template>
 
 <script>
-import ServerTag from '~/components/ServerTag.vue'
 import DNSModal from '~/components/DNSModal.vue'
+import ServerBox from '~/components/ServerBox.vue'
 
 export default {
   name: 'IndexPage',
-  components: { ServerTag },
+  components: { ServerBox },
   data () {
     return {
+      advanced: false,
+      version: 0,
+      platform: 'java',
       suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org'],
       host: 'debugmc.info',
+      port: 25565,
       history: [],
       loading: true,
       server: null,
@@ -166,6 +151,7 @@ export default {
   methods: {
     async preformPing () {
       if (!this.host || this.host === 'localhost') { return }
+      this.loading = true
       if (this.hasDNS) {
         const { a, aaaa, service } = await this.queryDNS()
         this.dns.a = a
@@ -177,6 +163,15 @@ export default {
         this.removeServer(this.host)
       }
       this.history.push(this.host)
+
+      const hostname = this.host.includes(':') ? this.host.split(':')[0] : this.host
+      const port = parseInt(this.host.includes(':') ? this.host.split(':')[1] : this.port) ?? false
+
+      const query = { hostname, platform: this.platform, version: this.version }
+
+      if (port) { query.port = port }
+
+      this.doAPIMagic(query)
     },
     removeServer (server) {
       this.history = this.history.filter(history => history !== server)
@@ -227,6 +222,38 @@ export default {
         component: DNSModal,
         hasModalCard: true,
         trapFocus: true
+      })
+    },
+    async doAPIMagic ({ hostname, port = 25565, platform = 'java', version }) {
+      if (!['java', 'bedrock'].includes(platform)) { return }
+
+      const query = [`hostname=${hostname}`]
+      if (platform === 'java') {
+        if (port !== 25565) {
+          query.push(`port=${port}`)
+        }
+      } else if (platform === 'bedrock') {
+        if (port !== 19132) {
+          query.push(`port=${port}`)
+        }
+      }
+
+      const response = await this.$axios.$get(`https://api.debugmc.info/${platform}?${query}`)
+
+      const { ping, resp } = response
+      const server = JSON.parse(resp)
+      const motd = server.description
+      delete server.description
+      server.motd = this.$autoToHtml(motd)
+      server.ping = ping
+      this.server = server
+      this.loading = false
+    },
+    copyToClipboard (thingy) {
+      navigator.clipboard.writeText(thingy)
+      this.$buefy.notification.open({
+        message: 'Copied!',
+        type: 'is-success'
       })
     }
   }

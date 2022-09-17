@@ -1,0 +1,4 @@
+@font-face {
+    font-family: 'Minecraft';
+    src: local('Minecraft'), url(~assets/fonts/MinecraftRegular.otf) format('truetype');
+}

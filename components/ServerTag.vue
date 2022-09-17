@@ -2,10 +2,12 @@
   <b-tag
     class="is-clickable is-unselectable"
     :attached="isAttached"
-    :closable="isCloseable"
+    :closable="closable"
     :icon="getIcon"
     :icon-type="getIconType"
     size="is-small"
+    @click="handleClick"
+    @close="handleClose"
   >
     {{ content }}
   </b-tag>
@@ -29,7 +31,7 @@ export default {
       required: true,
       default: ' '
     },
-    isCloseable: {
+    closable: {
       type: Boolean,
       required: false,
       default: false
@@ -51,7 +53,15 @@ export default {
       return ''
     },
     isAttached () {
-      return (this.suggested || this.icon) || this.isCloseable
+      return (this.suggested || this.icon) || this.closable
+    }
+  },
+  methods: {
+    handleClick () {
+      this.$emit('click', this.content)
+    },
+    handleClose () {
+      this.$emit('close', this.content)
     }
   }
 }

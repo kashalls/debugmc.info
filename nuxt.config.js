@@ -18,13 +18,15 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '~/assets/minecraft.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/isIP.js',
     '~/plugins/capitalizeFirstLetter.js',
-    '~/plugins/font-awesome.js'
+    '~/plugins/font-awesome.js',
+    '~/plugins/parseMinecraftColor.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
