@@ -67,9 +67,9 @@
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
-                  <b-tag icon="content-copy" size="is-small" class="is-clickable is-unselectable" @click="copyToClipboard(dns.a[0].data)">
-                    {{ dns.a[0].data }}
-                  </b-tag>
+                  <!-- <b-tag icon="content-copy" size="is-small" class="is-clickable is-unselectable" @click="copyToClipboard(dns.a[0].data ?? null)">
+                    {{ dns.a[0].data ?? null }}
+                  </b-tag> -->
                 </p>
               </div>
             </div>
