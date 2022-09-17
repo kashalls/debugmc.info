@@ -22,6 +22,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/isIP.js',
+    '~/plugins/capitalizeFirstLetter.js',
+    '~/plugins/font-awesome.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
