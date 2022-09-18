@@ -235,9 +235,6 @@ export default {
       this.history = this.history.filter(history => history !== server)
     },
     pingColor (ping) {
-      if (ping < 5) {
-        return 'is-danger is-light'
-      }
       if (ping < 90) {
         return 'is-success'
       }
@@ -259,7 +256,13 @@ export default {
         if (!answer.length) { return };
         const ips = answer.filter(record => record.type === 1)
         if (!ips.length) { return }
-        ips.forEach(record => srvA.push(record.data))
+        ips.forEach((record) => {
+          if (record.name === 'tcpshield.net') {
+            if (this.services.includes('tcpshield')) { return }
+            this.services.push('tcpshield')
+          }
+          srvA.push(record.data)
+        })
       }
 
       return { a, aaaa, service: services, srvA }
