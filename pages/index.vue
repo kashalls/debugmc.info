@@ -27,7 +27,7 @@
           <template #label>
             Port
             <b-tag v-if="port !== defaultPort" icon="restart" size="is-small" class="is-unselectable" @click.native="port = defaultPort">
-              Reset
+              Default
             </b-tag>
           </template>
         </b-field>
@@ -117,7 +117,7 @@
 
               <div class="block">
                 <b-skeleton v-if="loading" size="is-large" :count="2" />
-                <div v-else v-html="server.motd" />
+                <div v-else class="message-of-the-day" v-html="server.motd" />
               </div>
             </div>
           </div>
@@ -130,15 +130,17 @@
 <script>
 import DNSModal from '~/components/DNSModal.vue'
 import ServerBox from '~/components/ServerBox.vue'
+import IconBar from '~/components/IconBar.vue'
 
 export default {
   name: 'IndexPage',
-  components: { ServerBox },
+  components: { ServerBox, IconBar },
   data () {
     return {
       version: 0,
       platform: 'java',
       suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org', 'play.eternal.gs'],
+      services: [],
       host: 'debugmc.info',
       port: 25565,
       history: [],
@@ -169,6 +171,9 @@ export default {
         return 19132
       }
     }
+  },
+  mounted () {
+    this.preformPing()
   },
   methods: {
     async preformPing () {
@@ -249,25 +254,18 @@ export default {
     async doAPIMagic ({ hostname, port = 25565, platform = 'java', version }) {
       if (!['java', 'bedrock'].includes(platform)) { return }
 
-      const query = [`hostname=${hostname}`]
+      const query = [`hostname=${hostname}`, `port=${port === this.defaultPort ? this.defaultPort : port}`]
       if (platform === 'java') {
-        if (port !== 25565) {
-          query.push(`port=${port}`)
-        }
-      } else if (platform === 'bedrock') {
-        if (port !== 19132) {
-          query.push(`port=${port}`)
-        }
+        query.push(`version=${version}`)
       }
-
-      const response = await this.$axios.$get(`https://api.debugmc.info/${platform}?${query}`)
+      const response = await this.$axios.$get(`https://api.debugmc.info/${platform}?${query.join('&')}`)
 
       const { ping, resp } = response
       const server = JSON.parse(resp)
-      const motd = server.description
+      server.motd = this.$autoToHtml(server.description)
       delete server.description
       server.host = hostname
-      server.motd = this.$autoToHtml(motd)
+
       server.ping = (ping * 1000).toFixed(2)
       this.server = server
       this.loading = false
