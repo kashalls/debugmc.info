@@ -33,7 +33,7 @@
           </template>
         </b-field>
         <b-field label="Platform">
-          <b-select v-model="platform" icon="minecraft" @input="shouldUpdatePort">
+          <b-select v-model="platform" icon="minecraft" icon-type="is-success" @input="shouldUpdatePort">
             <option value="java">
               Java
             </option>
@@ -85,7 +85,7 @@
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
-                  <AAGIP :dns="dsn" />
+                  <AAGIP :dns="dns" />
                 </p>
               </div>
             </div>
@@ -192,10 +192,7 @@ export default {
       if (!this.host || this.host === 'localhost') { return }
       this.loading = true
       if (this.hasDNS) {
-        const { a, aaaa, service } = await this.queryDNS()
-        this.dns.a = a
-        this.dns.aaaa = aaaa
-        this.dns.service = service
+        this.dns = await this.queryDNS()
       }
 
       if (this.history.includes(this.host)) {
@@ -237,24 +234,26 @@ export default {
       return 'is-success is-light'
     },
     async queryDNS () {
-      const [a, aaaa, service] = await Promise.all([
+      const [a, aaaa, services] = await Promise.all([
         this.preformRecordDiscovery(this.host, 'A'),
         this.preformRecordDiscovery(this.host, 'AAAA'),
-        this.preformRecordDiscovery(`_minecraft._tcp.${this.host}`, 'SRV') // point _minecraft.... to mc.hypickle.net
+        this.preformRecordDiscovery(`_minecraft._tcp.${this.host}`, 'SRV')
       ])
 
-      this.dns = { a, aaaa, service, srvA: [] }
-      for (const service in this.dns.service) {
+      const srvA = []
+      for (const service of services) {
         const answer = await this.preformRecordDiscovery(service.data.split(' ')[3])
         if (!answer.length) { return };
         const ips = answer.filter(record => record.type === 1)
         if (!ips.length) { return }
-        ips.forEach(record => this.dns.srvA.push(record.data))
+        ips.forEach(record => srvA.push(record.data))
       }
+
+      return { a, aaaa, service: services, srvA }
     },
     async preformRecordDiscovery (host, type) {
       const response = await this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=${host}&type=${type}`, options)
-      if (!response.Status || response.Status !== 0) { return [] }
+      if (response.Status === null || response.Status !== 0) { return [] }
       if (!response.Answer) { return [] }
       return response.Answer
     },
@@ -266,13 +265,6 @@ export default {
         component: DNSModal,
         hasModalCard: true,
         trapFocus: true
-      })
-    },
-    copyToClipboard (thingy) {
-      navigator.clipboard.writeText(thingy)
-      this.$buefy.notification.open({
-        message: 'Copied!',
-        type: 'is-success'
       })
     }
   }

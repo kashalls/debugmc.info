@@ -15,22 +15,12 @@
       <section class="modal-card-body">
         <b-taglist>
           <b-tag
+            v-for="(value, propertyName) in dns"
+            :key="value"
             rounded
-            :type="tagTypeDetermine(dns.a.length)"
+            :type="tagTypeDetermine(value.length)"
           >
-            {{ dns.a.length }} A
-          </b-tag>
-          <b-tag
-            rounded
-            :type="tagTypeDetermine(dns.aaaa.length)"
-          >
-            {{ dns.aaaa.length }} AAAA
-          </b-tag>
-          <b-tag
-            rounded
-            :type="tagTypeDetermine(dns.service.length)"
-          >
-            {{ dns.service.length }} SRV
+            {{ value.length }} {{ propertyName.toLocaleUpperCase() }}
           </b-tag>
         </b-taglist>
         <template v-if="!anyRecords">
@@ -48,16 +38,8 @@
                     <br>
                     <ul>
                       <li v-for="record in value" :key="record">
-                        <template v-if="propertyName === 'service'">
-                          <b-tag>{{ record.data.split(' ')[3] }}</b-tag>
-                          <ul>
-                            <li v-for="data in record.parsed" :key="data">
-                              <b-tag>{{ data.data }}</b-tag>
-                            </li>
-                          </ul>
-                        </template>
-                        <b-tag v-else>
-                          {{ record.data }}
+                        <b-tag>
+                          {{ record.data ?? record }}
                         </b-tag>
                       </li>
                     </ul>
