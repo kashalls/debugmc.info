@@ -45,7 +45,9 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    // https://go.nuxtjs.dev/sentry
+    '@nuxtjs/sentry'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -61,7 +63,13 @@ export default {
     }
   },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
+  // https://sentry.nuxtjs.org/guide/setup
+  sentry: {
+    trace: true,
+    publishRelease: {
+      setCommits: {
+        auto: true
+      }
+    }
   }
 }

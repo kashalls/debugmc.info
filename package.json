@@ -19,6 +19,9 @@
     "@fortawesome/vue-fontawesome": "2.0.8",
     "@nuxtjs/axios": "5.13.6",
     "@nuxtjs/pwa": "3.3.5",
+    "@nuxtjs/robots": "^2.5.0",
+    "@nuxtjs/sentry": "^6.0.0",
+    "@sentry/tracing": "6",
     "@sfirew/mc-motd-parser": "1.0.9-10",
     "core-js": "3.25.1",
     "nuxt": "2.15.8",
@@ -32,6 +35,7 @@
     "@babel/eslint-parser": "7.19.1",
     "@nuxtjs/eslint-config": "11.0.0",
     "@nuxtjs/eslint-module": "3.1.0",
+    "@sentry/webpack-plugin": "^1.19.0",
     "eslint": "8.23.1",
     "eslint-plugin-nuxt": "4.0.0",
     "eslint-plugin-vue": "9.5.1"
