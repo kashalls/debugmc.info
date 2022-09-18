@@ -16,7 +16,7 @@
       />
     </b-taglist>
     <p v-else>
-      Nothing seems to be here... Why not check out the tested servers below?
+      Nothing seems to be here... Why not check out some servers?
     </p>
   </div>
 </template>
