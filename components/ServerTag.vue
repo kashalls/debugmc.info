@@ -40,10 +40,12 @@ export default {
   computed: {
     getIcon () {
       const { icon, suggested } = this
-      if (suggested) {
-        return 'star'
+      if (icon) {
+        return icon
       }
-
+      if (suggested) {
+        return 'crown'
+      }
       return icon
     },
     getIconType () {
