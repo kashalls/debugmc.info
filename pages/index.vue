@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <section class="section">
@@ -84,9 +85,7 @@
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
-                  <b-tag icon="content-copy" size="is-small" class="is-clickable is-unselectable" @click="copyToClipboard(dns.a[0].data ?? null)">
-                    {{ dns.a[0].data ?? null }}
-                  </b-tag>
+                  <AAGIP :dns="dsn" />
                 </p>
               </div>
             </div>
@@ -132,10 +131,13 @@
 import DNSModal from '~/components/DNSModal.vue'
 import ServerBox from '~/components/ServerBox.vue'
 import IconBar from '~/components/IconBar.vue'
+import AAGIP from '~/components/AAGIP.vue'
+
+const options = { headers: { accept: 'application/dns-json' } }
 
 export default {
   name: 'IndexPage',
-  components: { ServerBox, IconBar },
+  components: { ServerBox, IconBar, AAGIP },
   data () {
     return {
       version: 0,
@@ -150,7 +152,8 @@ export default {
       dns: {
         a: [],
         aaaa: [],
-        service: []
+        service: [],
+        srvA: []
       }
     }
   },
@@ -201,13 +204,22 @@ export default {
       this.history.push(this.host)
 
       const hostname = this.host.includes(':') ? this.host.split(':')[0] : this.host
-      const port = parseInt(this.host.includes(':') ? this.host.split(':')[1] : this.port) ?? false
 
-      const query = { hostname, platform: this.platform, version: this.version }
+      const query = [`hostname=${hostname}`, `port=${this.port === this.defaultPort ? this.defaultPort : this.port}`]
+      if (this.platform === 'java') {
+        query.push(`version=${this.version}`)
+      }
+      const response = await this.$axios.$get(`https://api.debugmc.info/${this.platform}?${query.join('&')}`)
 
-      if (port) { query.port = port }
+      const { ping, resp } = response
+      const server = JSON.parse(resp)
+      server.motd = this.$autoToHtml(server.description)
+      delete server.description
+      server.host = hostname
 
-      this.doAPIMagic(query)
+      server.ping = (ping * 1000).toFixed(2)
+      this.server = server
+      this.loading = false
     },
     removeServer (server) {
       this.history = this.history.filter(history => history !== server)
@@ -225,30 +237,26 @@ export default {
       return 'is-success is-light'
     },
     async queryDNS () {
-      const options = { headers: { accept: 'application/dns-json' } }
-
-      let [a, aaaa, service] = await Promise.all([
-        this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=${this.host}&type=A`, options),
-        this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=${this.host}&type=AAAA`, options),
-        this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=_minecraft._tcp.${this.host}&type=SRV`, options)
+      const [a, aaaa, service] = await Promise.all([
+        this.preformRecordDiscovery(this.host, 'A'),
+        this.preformRecordDiscovery(this.host, 'AAAA'),
+        this.preformRecordDiscovery(`_minecraft._tcp.${this.host}`, 'SRV') // point _minecraft.... to mc.hypickle.net
       ])
-      a = a.Answer ?? []
-      aaaa = a.Answer ?? []
-      service = service.Answer ?? []
 
-      service.forEach(async (srv) => {
-        const [, , , endpoint] = srv.data.split(' ')
-        if (this.$isIP(endpoint) === 0) {
-          const { Answer } = await this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=${endpoint}&type=A`, options)
-          if (!Answer) {
-            // eslint-disable-next-line no-console
-            console.log('I actually don\'t know what happens if this doesn\'t exist.')
-          } else {
-            service[service.indexOf(srv)].parsed = Answer
-          }
-        }
-      })
-      return { a, aaaa, service }
+      this.dns = { a, aaaa, service, srvA: [] }
+      for (const service in this.dns.service) {
+        const answer = await this.preformRecordDiscovery(service.data.split(' ')[3])
+        if (!answer.length) { return };
+        const ips = answer.filter(record => record.type === 1)
+        if (!ips.length) { return }
+        ips.forEach(record => this.dns.srvA.push(record.data))
+      }
+    },
+    async preformRecordDiscovery (host, type) {
+      const response = await this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=${host}&type=${type}`, options)
+      if (!response.Status || response.Status !== 0) { return [] }
+      if (!response.Answer) { return [] }
+      return response.Answer
     },
     doDNSLook () {
       const { host, dns } = this
@@ -259,25 +267,6 @@ export default {
         hasModalCard: true,
         trapFocus: true
       })
-    },
-    async doAPIMagic ({ hostname, port = 25565, platform = 'java', version }) {
-      if (!['java', 'bedrock'].includes(platform)) { return }
-
-      const query = [`hostname=${hostname}`, `port=${port === this.defaultPort ? this.defaultPort : port}`]
-      if (platform === 'java') {
-        query.push(`version=${version}`)
-      }
-      const response = await this.$axios.$get(`https://api.debugmc.info/${platform}?${query.join('&')}`)
-
-      const { ping, resp } = response
-      const server = JSON.parse(resp)
-      server.motd = this.$autoToHtml(server.description)
-      delete server.description
-      server.host = hostname
-
-      server.ping = (ping * 1000).toFixed(2)
-      this.server = server
-      this.loading = false
     },
     copyToClipboard (thingy) {
       navigator.clipboard.writeText(thingy)
