@@ -32,7 +32,7 @@
           </template>
         </b-field>
         <b-field label="Platform">
-          <b-select v-model="platform" icon="minecraft">
+          <b-select v-model="platform" icon="minecraft" @input="shouldUpdatePort">
             <option value="java">
               Java
             </option>
@@ -80,12 +80,13 @@
                 <b-skeleton v-if="loading" />
                 <p v-else class="title is-size-4">
                   {{ server.host }}
+                  <IconBar :services="services" />
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
-                  <!-- <b-tag icon="content-copy" size="is-small" class="is-clickable is-unselectable" @click="copyToClipboard(dns.a[0].data ?? null)">
+                  <b-tag icon="content-copy" size="is-small" class="is-clickable is-unselectable" @click="copyToClipboard(dns.a[0].data ?? null)">
                     {{ dns.a[0].data ?? null }}
-                  </b-tag> -->
+                  </b-tag>
                 </p>
               </div>
             </div>
@@ -176,6 +177,14 @@ export default {
     this.preformPing()
   },
   methods: {
+    shouldUpdatePort () {
+      if (this.platform === 'java' && this.port === 19132) {
+        this.port = this.defaultPort
+      }
+      if (this.platform === 'bedrock' && this.port === 25565) {
+        this.port = this.defaultPort
+      }
+    },
     async preformPing () {
       if (!this.host || this.host === 'localhost') { return }
       this.loading = true
