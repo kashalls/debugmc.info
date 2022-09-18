@@ -243,10 +243,11 @@ export default {
       return 'is-success is-light'
     },
     async queryDNS () {
-      const [a, aaaa, services] = await Promise.all([
+      const [a, aaaa, services, soa] = await Promise.all([
         this.preformRecordDiscovery(this.host, 'A'),
         this.preformRecordDiscovery(this.host, 'AAAA'),
-        this.preformRecordDiscovery(`_minecraft._tcp.${this.host}`, 'SRV')
+        this.preformRecordDiscovery(`_minecraft._tcp.${this.host}`, 'SRV'),
+        this.preformRecordDiscovery(this.host, 'soa')
       ])
 
       const srvA = []
@@ -264,12 +265,22 @@ export default {
         })
       }
 
+      soa.forEach((answer) => {
+        if (this.services.includes('cloudflare')) { return }
+        if (answer.data.includes('cloudflare.com')) {
+          this.services.push('cloudflare')
+        }
+      })
+
       return { a, aaaa, service: services, srvA }
     },
     async preformRecordDiscovery (host, type) {
       const response = await this.$axios.$get(`https://cloudflare-dns.com/dns-query?name=${host}&type=${type}`, options)
       if (response.Status === null || response.Status !== 0) { return [] }
       if (!response.Answer) { return [] }
+      if (response.Question[0].type === 6) {
+        return response.Authority ?? response.Answer
+      }
       return response.Answer
     },
     doDNSLook () {
