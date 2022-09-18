@@ -91,8 +91,7 @@
               <div class="media-content">
                 <b-skeleton v-if="loading" />
                 <p v-else class="title is-size-4">
-                  {{ server.host }}
-                  <IconBar :services="services" />
+                  {{ server.host }} <IconBar :services="services" />
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
