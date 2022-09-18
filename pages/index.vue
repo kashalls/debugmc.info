@@ -9,17 +9,22 @@
     </h2>
     <div class="box">
       <b-field grouped>
-        <b-input v-model="host" placeholder="debugmc.info" type="search" expanded />
+        <b-field label="Host" expanded>
+          <b-input v-model="host" placeholder="debugmc.info" type="search" expanded />
+        </b-field>
+        <b-field>
+          <b-numberinput v-model="port" :controls="false" step="1" exponential />
+          <template #label>
+            Port
+          </template>
+        </b-field>
         <p class="control">
           <b-button class="button is-primary" @click="preformPing">
             Query
           </b-button>
         </p>
-        <b-checkbox v-model="advanced">
-          Advanced
-        </b-checkbox>
       </b-field>
-      <b-field v-if="advanced" grouped>
+      <b-field grouped>
         <b-field label="Platform Override">
           <b-select v-model="platform" icon="minecraft">
             <option value="java">
@@ -34,12 +39,6 @@
           <b-numberinput v-model="version" :controls="false" step="1" exponential />
           <template #label>
             Protocol Version
-          </template>
-        </b-field>
-        <b-field>
-          <b-numberinput v-model="port" :controls="false" step="1" exponential />
-          <template #label>
-            Port Override
           </template>
         </b-field>
       </b-field>
@@ -120,7 +119,6 @@ export default {
   components: { ServerBox },
   data () {
     return {
-      advanced: false,
       version: 0,
       platform: 'java',
       suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org'],
@@ -177,16 +175,16 @@ export default {
       this.history = this.history.filter(history => history !== server)
     },
     pingColor (ping) {
-      if (ping > 5) {
+      if (ping < 5) {
         return 'is-danger is-light'
       }
-      if (ping > 90) {
+      if (ping < 90) {
         return 'is-success'
       }
-      if (ping > 170) {
+      if (ping < 170) {
         return 'is-warning'
       }
-      return 'is-danger'
+      return 'is-success is-light'
     },
     async queryDNS () {
       const options = { headers: { accept: 'application/dns-json' } }
@@ -245,7 +243,7 @@ export default {
       const motd = server.description
       delete server.description
       server.motd = this.$autoToHtml(motd)
-      server.ping = ping
+      server.ping = (ping * 1000).toFixed(2)
       this.server = server
       this.loading = false
     },
