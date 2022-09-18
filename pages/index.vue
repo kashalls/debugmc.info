@@ -8,9 +8,12 @@
       <i>Quickly debug your minecraft server!</i>
     </h2>
     <div class="box">
-      <b-field grouped>
-        <b-field label="Host" expanded>
+      <b-field grouped group-multiline>
+        <b-field expanded>
           <b-input v-model="host" placeholder="debugmc.info" type="search" expanded />
+          <template #label>
+            Host
+          </template>
         </b-field>
         <b-field>
           <b-numberinput v-model="port" :controls="false" step="1" exponential />
@@ -18,14 +21,7 @@
             Port
           </template>
         </b-field>
-        <p class="control">
-          <b-button class="button is-primary" @click="preformPing">
-            Query
-          </b-button>
-        </p>
-      </b-field>
-      <b-field grouped>
-        <b-field label="Platform Override">
+        <b-field label="Platform">
           <b-select v-model="platform" icon="minecraft">
             <option value="java">
               Java
@@ -38,15 +34,20 @@
         <b-field label="Protocol Version">
           <b-numberinput v-model="version" :controls="false" step="1" exponential />
           <template #label>
-            Protocol Version
+            Protocol <a href="https://wiki.vg/Protocol_History"><b-icon icon="link-variant" size="is-small" class="is-clickable" /></a>
           </template>
         </b-field>
+        <p class="control">
+          <b-button class="button is-primary" @click="preformPing">
+            Query
+          </b-button>
+        </p>
       </b-field>
     </div>
     <div class="columns">
       <div class="column">
-        <ServerBox title="Recent History" :history="history" @select="host = $event" @remove="removeServer($event)" />
         <ServerBox title="Suggested Servers" :history="suggestions" :suggested="true" @select="host = $event" />
+        <ServerBox title="Recent History" :history="history" @select="host = $event" @remove="removeServer($event)" />
       </div>
 
       <div class="column">
