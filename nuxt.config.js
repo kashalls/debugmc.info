@@ -18,7 +18,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~/assets/minecraft.css'
+    '~/assets/minecraft.css',
+    '~/assets/custom-colors.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
