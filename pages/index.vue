@@ -16,9 +16,19 @@
           </template>
         </b-field>
         <b-field>
-          <b-numberinput v-model="port" :controls="false" step="1" exponential />
+          <b-numberinput
+            v-model="port"
+            :controls="false"
+            step="1"
+            exponential
+            :min="1"
+            :max="65535"
+          />
           <template #label>
             Port
+            <b-tag v-if="port !== defaultPort" icon="restart" size="is-small" class="is-unselectable" @click.native="port = defaultPort">
+              Reset
+            </b-tag>
           </template>
         </b-field>
         <b-field label="Platform">
@@ -31,17 +41,23 @@
             </option>
           </b-select>
         </b-field>
-        <b-field label="Protocol Version">
-          <b-numberinput v-model="version" :controls="false" step="1" exponential />
+        <b-field>
+          <b-numberinput
+            v-model="version"
+            :controls="false"
+            step="1"
+            exponential
+            :min="0"
+            :max="999"
+            :disabled="platform === 'bedrock'"
+          />
           <template #label>
-            Protocol <a href="https://wiki.vg/Protocol_History"><b-icon icon="link-variant" size="is-small" class="is-clickable" /></a>
+            Protocol <a href="https://wiki.vg/Protocol_version_numbers"><b-icon icon="link-variant" size="is-small" class="is-clickable" /></a>
           </template>
         </b-field>
-        <p class="control">
-          <b-button class="button is-primary" @click="preformPing">
-            Query
-          </b-button>
-        </p>
+        <b-button type="is-primary" class="mt-auto" :loading="loading" @click="preformPing">
+          Query
+        </b-button>
       </b-field>
     </div>
     <div class="columns">
@@ -63,7 +79,7 @@
               <div class="media-content">
                 <b-skeleton v-if="loading" />
                 <p v-else class="title is-size-4">
-                  {{ host }}
+                  {{ server.host }}
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
@@ -122,7 +138,7 @@ export default {
     return {
       version: 0,
       platform: 'java',
-      suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org'],
+      suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org', 'play.eternal.gs'],
       host: 'debugmc.info',
       port: 25565,
       history: [],
@@ -144,6 +160,13 @@ export default {
         case 6:
         default:
           return false
+      }
+    },
+    defaultPort () {
+      if (this.platform === 'java') {
+        return 25565
+      } else {
+        return 19132
       }
     }
   },
@@ -243,6 +266,7 @@ export default {
       const server = JSON.parse(resp)
       const motd = server.description
       delete server.description
+      server.host = hostname
       server.motd = this.$autoToHtml(motd)
       server.ping = (ping * 1000).toFixed(2)
       this.server = server
