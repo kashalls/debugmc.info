@@ -241,7 +241,7 @@ export default {
       if (ping < 170) {
         return 'is-warning'
       }
-      return 'is-success is-light'
+      return 'is-danger'
     },
     async queryDNS () {
       const [a, aaaa, services, soa] = await Promise.all([
@@ -253,7 +253,8 @@ export default {
 
       const srvA = []
       for (const service of services) {
-        const answer = await this.preformRecordDiscovery(service.data.split(' ')[3])
+        const dataLocation = service.type === 33 ? service.data.split(' ')[3] : service.data
+        const answer = await this.preformRecordDiscovery(dataLocation)
         if (!answer.length) { return };
         const ips = answer.filter(record => record.type === 1)
         if (!ips.length) { return }
