@@ -1,4 +1,6 @@
-export default ({ app }, inject) => {
+import { NotificationProgrammatic as Notification } from 'buefy'
+
+export default ({ $buefy }, inject) => {
   inject('isIP', (ip) => {
     // IPv4 Segment
     const v4Seg = '(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
@@ -19,5 +21,13 @@ export default ({ app }, inject) => {
     if (IPv4Reg.test(ip)) { return 4 }
     if (IPv6Reg.test(ip)) { return 6 }
     return 0
+  })
+
+  inject('copyToClipboard', (thingy) => {
+    navigator.clipboard.writeText(thingy)
+    Notification.open({
+      message: 'Copied!',
+      type: 'is-success'
+    })
   })
 }
