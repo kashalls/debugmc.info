@@ -34,13 +34,12 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~/assets/minecraft.css',
-    '~/assets/custom-colors.css'
+    '~/assets/scss/main.scss'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/isIP.js',
+    '~/plugins/Utils.js',
     '~/plugins/capitalizeFirstLetter.js',
     '~/plugins/font-awesome.js',
     '~/plugins/parseMinecraftColor.js'
@@ -58,11 +57,9 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/buefy
-    'nuxt-buefy',
+    ['nuxt-buefy', { css: false }],
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/sentry
     '@nuxtjs/sentry'
   ],
@@ -73,13 +70,6 @@ export default {
     baseURL: '/'
   },
 
-  // PWA module configuration: https://go.nuxtjs.dev/pwa
-  pwa: {
-    manifest: {
-      lang: 'en'
-    }
-  },
-
   // https://sentry.nuxtjs.org/guide/setup
   sentry: {
     trace: true,
@@ -88,5 +78,7 @@ export default {
         auto: true
       }
     }
-  }
+  },
+
+  build: {}
 }
