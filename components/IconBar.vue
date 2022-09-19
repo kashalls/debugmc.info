@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="block">
     <b-tooltip
       v-for="service in services"
       :key="service"
@@ -9,9 +9,7 @@
       <template #content>
         This domain is using <u>{{ $capitalizeFirstLetter(service) }}</u>.
       </template>
-      <template v-if="service === 'tcpshield'">
-        <TCPShieldIcon :class="getType(service)" />
-      </template>
+      <img v-if="service === 'tcpshield'" src="~/assets/img/TCPShieldIcon.svg" width="22px" class="mx-2">
       <FontAwesomeIcon
         v-else
         :class="service"
@@ -23,14 +21,11 @@
 </template>
 
 <script>
-import TCPShieldIcon from '~/assets/icons/TCPShieldIcon.svg?inline'
-
 const colorMap = {
   cloudflare: 'is-warning'
 }
 
 export default {
-  components: { TCPShieldIcon },
   props: {
     services: {
       type: Array,

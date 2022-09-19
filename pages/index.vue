@@ -78,19 +78,15 @@
           <div class="card-content">
             <div class="media">
               <div class="media-left">
-                <figure class="image is-48x48">
-                  <b-skeleton v-if="loading || !server.favicon" width="48px" height="48px" />
-                  <b-image v-else :src="server.favicon" />
+                <figure class="image is-64x64">
+                  <b-skeleton v-if="loading || !server.favicon" width="64px" height="64px" />
+                  <b-image v-else custom-class="pixel-image" :src="server.favicon" />
                 </figure>
               </div>
               <div class="media-content">
                 <b-skeleton v-if="loading" />
                 <p v-else class="title is-size-4">
-                  {{ server.host }}
-                </p>
-                <b-skeleton v-if="loading" />
-                <p v-else class="subtitle is-size-6">
-                  <IconBar :services="services" />
+                  {{ server.host }} <IconBar :services="services" />
                 </p>
               </div>
             </div>
@@ -204,10 +200,8 @@ export default {
     },
     async preformPing () {
       if (!this.host || this.host === 'localhost') { return }
+      this.services = []
       this.loading = true
-      if (this.hasDNS) {
-        this.dns = await this.queryDNS()
-      }
 
       if (this.history.includes(this.host)) {
         this.removeServer(this.host)
@@ -221,6 +215,17 @@ export default {
         query.push(`version=${this.version}`)
       }
       const response = await this.$axios.$get(`https://${this.region}-api.debugmc.info/${this.platform}?${query.join('&')}`)
+      if (this.hasDNS) {
+        this.dns = await this.queryDNS()
+      }
+
+      if (!response) {
+        this.loading = false
+        return this.$buefy.notification.open({
+          message: 'Failed to connect. Is that server firewalled or running?',
+          type: 'is-danger'
+        })
+      }
 
       const { ping, resp } = response
       const server = JSON.parse(resp)
@@ -307,5 +312,9 @@ export default {
 
   .minecraft {
       font-family: 'Minecraft';
+  }
+
+  .pixel-image {
+    image-rendering: pixelated;
   }
   </style>
