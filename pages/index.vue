@@ -74,11 +74,6 @@
     </div>
     <div class="columns">
       <div class="column">
-        <ServerBox title="Suggested Servers" :history="suggestions" :suggested="true" @select="host = $event" />
-        <ServerBox title="Recent History" :history="history" @select="host = $event" @remove="removeServer($event)" />
-      </div>
-
-      <div class="column">
         <div class="card">
           <div class="card-content">
             <div class="media">
@@ -91,17 +86,17 @@
               <div class="media-content">
                 <b-skeleton v-if="loading" />
                 <p v-else class="title is-size-4">
-                  {{ server.host }} <IconBar :services="services" />
+                  {{ server.host }}
                 </p>
                 <b-skeleton v-if="loading" />
                 <p v-else class="subtitle is-size-6">
-                  <AAGIP :dns="dns" />
+                  <IconBar :services="services" />
                 </p>
               </div>
             </div>
 
             <div class="content">
-              <b-taglist>
+              <b-taglist class="mb-0">
                 <b-tag :type="loading ? '' : pingColor(server.ping)" icon="wifi-star" size="is-small">
                   <b-skeleton v-if="loading" width="36px" />
                   <template v-else>
@@ -124,14 +119,21 @@
                   DNS
                 </b-tag>
               </b-taglist>
+              <AAGIP :dns="dns" />
 
               <div class="block">
                 <b-skeleton v-if="loading" size="is-large" :count="2" />
-                <div v-else class="message-of-the-day" v-html="server.motd" />
+                <b-tooltip v-else position="is-bottom" label="Click to copy!" type="is-dark">
+                  <div class="minecraft is-unselectable is-clickable" @click="$copyToClipboard(server.description)" v-html="server.motd" />
+                </b-tooltip>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="column">
+        <ServerBox title="Suggested Servers" :history="suggestions" :suggested="true" @select="host = $event" />
+        <ServerBox title="Recent History" :history="history" @select="host = $event" @remove="removeServer($event)" />
       </div>
     </div>
   </section>
@@ -223,7 +225,6 @@ export default {
       const { ping, resp } = response
       const server = JSON.parse(resp)
       server.motd = this.$autoToHtml(server.description)
-      delete server.description
       server.host = hostname
 
       server.ping = (ping * 1000).toFixed(2)
@@ -296,3 +297,14 @@ export default {
   }
 }
 </script>
+
+<style>
+  @font-face {
+      font-family: 'Minecraft';
+      src: local('Minecraft'), url(~assets/fonts/Monocraft.otf) format('opentype');
+  }
+
+  .minecraft {
+      font-family: 'Minecraft';
+  }
+  </style>
