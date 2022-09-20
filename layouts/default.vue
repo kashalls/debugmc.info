@@ -1,25 +1,6 @@
 <template>
   <div>
-    <nav
-      class="navbar header has-shadow is-primary"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div class="navbar-brand">
-        <a
-          class="navbar-item"
-          href="/"
-        >
-          debugmc.info
-        </a>
-
-        <div class="navbar-burger">
-          <span />
-          <span />
-          <span />
-        </div>
-      </div>
-    </nav>
+    <NavBar />
 
     <section class="main-content columns">
       <div class="container column is-10">
@@ -33,8 +14,9 @@
 
 <script>
 import FooterBar from '~/components/FooterBar.vue'
+import NavBar from '~/components/NavBar.vue'
 export default {
   name: 'DefaultLayout',
-  components: { FooterBar }
+  components: { FooterBar, NavBar }
 }
 </script>
