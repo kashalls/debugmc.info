@@ -148,7 +148,7 @@ export default {
   components: { ServerBox, IconBar, AAGIP },
   data () {
     return {
-      regions: ['seattle', 'sydney'],
+      regions: ['seattle'],
       region: 'seattle',
       version: 0,
       platform: 'java',
