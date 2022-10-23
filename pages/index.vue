@@ -56,17 +56,6 @@
             Protocol <a href="https://wiki.vg/Protocol_version_numbers"><b-icon icon="link-variant" size="is-small" class="is-clickable" /></a>
           </template>
         </b-field>
-        <b-field label="Region">
-          <b-select v-model="region" icon="earth">
-            <option
-              v-for="api of regions"
-              :key="api"
-              :value="api"
-            >
-              {{ $capitalizeFirstLetter(api) }}
-            </option>
-          </b-select>
-        </b-field>
         <b-button type="is-primary" class="mt-auto" :loading="loading" @click="preformPing">
           Query
         </b-button>
@@ -148,8 +137,6 @@ export default {
   components: { ServerBox, IconBar, AAGIP },
   data () {
     return {
-      regions: ['seattle'],
-      region: 'seattle',
       version: 0,
       platform: 'java',
       suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org', 'play.eternal.gs'],
@@ -214,7 +201,7 @@ export default {
       if (this.platform === 'java') {
         query.push(`version=${this.version}`)
       }
-      const response = await this.$axios.$get(`https://${this.region}-api.debugmc.info/${this.platform}?${query.join('&')}`)
+      const response = await this.$axios.$get(`https://api.debugmc.info/${this.platform}?${query.join('&')}`)
       if (this.hasDNS) {
         this.dns = await this.queryDNS()
       }
