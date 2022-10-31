@@ -246,7 +246,7 @@ export default {
       const srvA = []
       for (const service of services) {
         const dataLocation = service.type === 33 ? service.data.split(' ')[3] : service.data
-        const answer = await this.preformRecordDiscovery(dataLocation)
+        const answer = await this.preformRecordDiscovery(dataLocation, 'SRV')
         if (!answer.length) { return };
         const ips = answer.filter(record => record.type === 1)
         if (!ips.length) { return }
