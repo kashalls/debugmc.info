@@ -24,7 +24,7 @@
     "@sentry/tracing": "6.19.7",
     "@sfirew/mc-motd-parser": "1.0.9-10",
     "bulma": "0.9.4",
-    "core-js": "3.25.2",
+    "core-js": "3.26.0",
     "nuxt": "2.15.8",
     "nuxt-buefy": "0.4.24",
     "vue": "2.7.10",
