@@ -1652,10 +1652,10 @@
     "@sentry/cli" "^1.74.6"
     webpack-sources "^2.0.0 || ^3.0.0"
 
-"@sfirew/mc-motd-parser@1.0.9-10":
-  version "1.0.9-10"
-  resolved "https://registry.yarnpkg.com/@sfirew/mc-motd-parser/-/mc-motd-parser-1.0.9-10.tgz#a39fa79f5ea55cc10637e223aef54e005f79a0f3"
-  integrity sha512-DTF5t4hroapCjOMAd9gIabU3OjFNJrbMsuzxLa3cW+/br7bvQbZwBDAVTsV/Gn2J42dVEVCT6mv5Jlm9QRUHMg==
+"@sfirew/mc-motd-parser@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@sfirew/mc-motd-parser/-/mc-motd-parser-1.1.0.tgz#99acc0050b0d2d0ff04d287de0a0bba5a4e93f80"
+  integrity sha512-ZAEzoNksg4bloSRdMDZxxBKGldSzjw5q7TAHqAwvzxraWtge6IceZJFVsJJeRnJYKgRUru/9vG/w4o7/ELX/lw==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
