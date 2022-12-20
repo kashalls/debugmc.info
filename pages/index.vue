@@ -141,7 +141,7 @@ export default {
       platform: 'java',
       suggestions: ['debugmc.info', 'hypixel.net', '2b2t.org', 'play.eternal.gs'],
       services: [],
-      host: 'debugmc.info',
+      host: 'play.eternal.gs',
       port: 25565,
       history: [],
       loading: true,
