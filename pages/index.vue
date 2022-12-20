@@ -207,11 +207,12 @@ export default {
       }
 
       if (!response) {
-        this.loading = false
-        return this.$buefy.notification.open({
-          message: 'Failed to connect. Is that server firewalled or running?',
+        this.$buefy.notification.open({
+          message: 'Server is not responding to packets at this moment.',
           type: 'is-danger'
         })
+        this.loading = false
+        return
       }
 
       const { ping, resp } = response
