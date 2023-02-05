@@ -19,7 +19,7 @@
     "@fortawesome/vue-fontawesome": "2.0.10",
     "@nuxtjs/axios": "5.13.6",
     "@nuxtjs/pwa": "3.3.5",
-    "@nuxtjs/robots": "2.5.0",
+    "@nuxtjs/robots": "3.0.0",
     "@nuxtjs/sentry": "6.0.3",
     "@sentry/tracing": "7.34.0",
     "@sfirew/mc-motd-parser": "1.1.0",
