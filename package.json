@@ -36,7 +36,7 @@
     "@babel/eslint-parser": "7.21.8",
     "@nuxtjs/color-mode": "2.1.1",
     "@nuxtjs/eslint-config": "12.0.0",
-    "@nuxtjs/eslint-module": "4.0.2",
+    "@nuxtjs/eslint-module": "4.1.0",
     "@nuxtjs/svg": "0.4.0",
     "@sentry/webpack-plugin": "1.20.1",
     "eslint": "8.41.0",
