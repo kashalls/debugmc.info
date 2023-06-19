@@ -21,7 +21,7 @@
     "@nuxtjs/pwa": "3.3.5",
     "@nuxtjs/robots": "3.0.0",
     "@nuxtjs/sentry": "6.0.3",
-    "@sentry/tracing": "7.54.0",
+    "@sentry/tracing": "7.56.0",
     "@sfirew/mc-motd-parser": "1.1.0",
     "bulma": "0.9.4",
     "core-js": "3.31.0",
