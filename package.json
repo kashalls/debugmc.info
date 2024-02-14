@@ -37,7 +37,7 @@
     "@nuxtjs/color-mode": "2.1.1",
     "@nuxtjs/eslint-config": "12.0.0",
     "@nuxtjs/eslint-module": "4.1.0",
-    "@nuxtjs/svg": "0.4.0",
+    "@nuxtjs/svg": "0.4.1",
     "@sentry/webpack-plugin": "2.14.0",
     "eslint": "8.45.0",
     "eslint-plugin-nuxt": "4.0.0",
